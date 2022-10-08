@@ -1,0 +1,20 @@
+body{
+    background-image: url("../imagenes/tasty-fresh-appetizing-italian-food-ingredients-on-old-rustic-wooden-background-ready-to-cook-home-italian-healthy-food-cooking-concept.jpg");
+    background-size:100%;
+    background-repeat:repeat-y;
+}
+#recetas{
+    opacity: 0.9;
+}
+img{
+    opacity: 1;
+}
+  
+  ul.nutri-first li::before.fat {
+    content: "\25CF";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+    color: red; /* Change the color */
+    font-weight: bold; /* If you want it to be bold */
+    display: inline-block; /* Needed to add space between the bullet and the text */
+    width: 2em; /* Also needed for space (tweak if needed) */
+    margin-left: -1em; /* Also needed for space (tweak if needed) */
+  }
