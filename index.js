@@ -108,6 +108,7 @@ const marvel={
 };
 marvel.render();*/
 let favoritosTemporal=[]
+
 async function apiRespuesta() {
   let app_id = "5d3a5e8f";
   let app_key = "61c7b7bd4ec183a6f7c871979335e3dd";
@@ -127,7 +128,7 @@ async function apiRespuesta() {
       health.push(receta.recipe.healthLabels[index] + "  ");
     }
     health = health.toString();
-    
+    health = health.replace(/,/g, punto);
 
 //variable donde se aloje los datos temporales sobre cada tarjeta de receta, para que al añadir a favoritos
 
@@ -150,7 +151,7 @@ async function apiRespuesta() {
     })
 console.log(favoritosTemporal);
 
-health = health.replace(/,/g, punto);
+
     document.getElementById("contenedor").innerHTML += `
     <div class="col-md-8 mx-auto my-1 rounded" id="recetas">
     <div class="card  box-shadow">
@@ -170,6 +171,8 @@ health = health.replace(/,/g, punto);
                 <div >
                 <button type="button"  onclick='favoritos("${receta.recipe.label}")'
                 class="btn btn-warning text-dark">favorito</button>
+                <button type="button"  onclick='eliminarFavorito("${receta.recipe.label}")'
+                class="btn btn-warning text-dark">eliminar</button>
                 </div>
               </div>
               <p class="card-text" id="">&#9679;${health}</p>
@@ -210,19 +213,31 @@ health = health.replace(/,/g, punto);
   }
 }
 
-let favoritoNuevo=[];
-let favoritoJson=JSON.parse(localStorage.getItem("favorito"));
+    let favoritoNuevo=[];
+    let favoritoJson=JSON.parse(localStorage.getItem("favorito"));
+
 function favoritos(a){
- //console.log(a);
+  favoritoJson=JSON.parse(localStorage.getItem("favorito"));
+  const indexF = favoritoJson.findIndex(i => i.label === a)
+  const index = favoritosTemporal.findIndex(i => i.label === a);
+console.log(index);
+  
+  if (indexF > -1) {
+    // si está, lo quitamos
+    eliminarFavorito(favoritosTemporal[index]);
+  } else {
+    // si no está, lo añadimos
+    favoritoJson.push(favoritosTemporal[index]);
+    localStorage.setItem("favorito", JSON.stringify(favoritoJson));
+  }
 
- const index = favoritosTemporal.findIndex(i => i.label === a);
- console.log(index);
-
-
-    favoritoNuevo.push(favoritosTemporal[index]);
-    localStorage.setItem("favorito", JSON.stringify(favoritoNuevo));
-  favoritoJson= JSON.parse(localStorage.getItem("favorito"));
 }
+function eliminarFavorito(a){
+  favoritoJson= JSON.parse(localStorage.getItem("favorito"));
+  fav = favoritoJson.filter(f => f.label !== a);
+  localStorage.setItem("favorito", JSON.stringify(fav));
+}
+
 //funciones
 function ver(mostrar) {
   let infoMostrar = "Mostrar los Platos guardados en el LocalStorage";
@@ -319,17 +334,74 @@ function ingreso() {
 
 function mostrarPlato() {
   if (usuarioConectadoJson === true) {
-    reset();
-    for (let item of platoJson) {
-      tablaContent += `
+   // reset();
+    for (let i of favoritoJson) {
+      document.getElementById("contenedor").innerHTML += `
+      <div class="col-md-8 mx-auto my-1 rounded" id="recetas">
+      <div class="card  box-shadow">
+        <div class="card-body ">
+  
+          <div class="d-flex flex-nowrap row">
+            <div class="m-1 col-md-4 ">
+              <img class="card-img"
+                data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt=""
+                src="${i.image}" data-holder-rendered="true"
+                style="height: 200px; width:100%; display: block;">
+            </div>
+            <div class="col-md-8 m-1 d-flex col">
+              <div>
+                <div class="d-flex  align-items-center mt-3 ">
+                  <h2 class="card-title">${i.label}</h2>
+                  <div >
+                  <button type="button"  onclick='favoritos("${i.label}")'
+                  class="btn btn-warning text-dark">favorito</button>
+                  </div>
+                </div>
+                <p class="card-text" id="">&#9679;${i.healthLabels}</p>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex col-md-12 d-flex justify-content-between align-content-center row my-2 mx-auto ">
+            <div class="col-md-4 d-flex justify-content-center mx-auto row">
+              <small class="text-muted">comida tipica: ${i.tipic[0]}</small>
+              <div class="">
+                <h5>${i.calories} Kcal</h5>
+            </div>
+            <button type="button" class="btn btn-primary btn-lg"><a href="${i.url}" target="_blank" style="text-decoration:none; color:white">Ir al Sitio</a></button>
+          </div>
+            <div class="col-md-4">
+              <ul class="list-unstyled ">
+                <li class="d-flex justify-content-between "> <span>&#128308; Protein</span> <span>${i.Protein} g</span> </li>
+                <li class="d-flex justify-content-between "> <span>&#128994; Fat</span> <span>${i.Fat} g</span> </li>
+                <li class="d-flex justify-content-between "> <span>	&#128993; Carb</span> <span>${i.Carb} g</span> </li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <ul class="list-unstyled ">
+                <li class="d-flex justify-content-between "> <span>Cholesterol</span> <span>${i.Cholesterol} mg</span> </li>
+                <li class="d-flex justify-content-between "> <span>Sodium</span> <span>${i.Sodium} mg</span> </li>
+                <li class="d-flex justify-content-between "> <span>Calcium</span> <span>${i.Calcium} mg</span> </li>
+                <li class="d-flex justify-content-between "> <span>Magnesium</span> <span>${i.Magnesium} mg</span> </li>
+                <li class="d-flex justify-content-between "> <span>Potassium</span> <span>${i.Potassium} mg</span> </li>
+                <li class="d-flex justify-content-between "> <span>Iron</span> <span>${i.Iron} mg</span> </li>
+              </ul>
+            </div>
+          </div>
+  
+  
+        </div>
+      </div>
+    </div>`;
+      
+      /*tablaContent += `
     <tr>
       <td>${item.nombre}</td>
       <td>${item.ingredientes}</td>
       <td>${item.pais}</td>
       <td>${item.precio}</td>
-    </td>`;
+    </td>`;*/
     }
-    listaPlatos.innerHTML += tablaContent;
+    //listaPlatos.innerHTML += tablaContent;
   } else {
     Swal.fire("Para continuar debe Iniciar Sesión");
     function mostrar() {
