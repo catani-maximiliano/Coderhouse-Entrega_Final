@@ -150,13 +150,57 @@ async function apiRespuesta() {
       Iron: receta.recipe.digest[8].total.toFixed(1)
     })
 console.log(favoritosTemporal);
+let buttonHeart=`<input type="checkbox" id="checkbox" />
+<label for="checkbox">
+  <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
+    <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+      <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
+      <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
 
+      <g id="grp7" opacity="0" transform="translate(7 6)">
+        <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
+        <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
+      </g>
+
+      <g id="grp6" opacity="0" transform="translate(0 28)">
+        <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
+        <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
+      </g>
+
+      <g id="grp3" opacity="0" transform="translate(52 28)">
+        <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
+        <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
+      </g>
+
+      <g id="grp2" opacity="0" transform="translate(44 6)">
+        <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
+        <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
+      </g>
+
+      <g id="grp5" opacity="0" transform="translate(14 50)">
+        <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
+        <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
+      </g>
+
+      <g id="grp4" opacity="0" transform="translate(35 50)">
+        <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
+        <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
+      </g>
+
+      <g id="grp1" opacity="0" transform="translate(24)">
+        <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
+        <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
+      </g>
+    </g>
+  </svg>
+</label>
+`;
+let buttonClose=``;
 
     document.getElementById("contenedor").innerHTML += `
     <div class="col-md-8 mx-auto my-1 rounded" id="recetas">
     <div class="card  box-shadow">
       <div class="card-body ">
-
         <div class="d-flex flex-nowrap row">
           <div class="m-1 col-md-4 ">
             <img class="card-img"
@@ -170,9 +214,9 @@ console.log(favoritosTemporal);
                 <h2 class="card-title">${receta.recipe.label}</h2>
                 <div >
                 <button type="button"  onclick='favoritos("${receta.recipe.label}")'
-                class="btn btn-warning text-dark">favorito</button>
+                class="btn ">${buttonHeart}</button>
                 <button type="button"  onclick='eliminarFavorito("${receta.recipe.label}")'
-                class="btn btn-warning text-dark">eliminar</button>
+                class="btn btn-warning text-dark">${buttonClose}</button>
                 </div>
               </div>
               <p class="card-text" id="">&#9679;${health}</p>
@@ -205,8 +249,6 @@ console.log(favoritosTemporal);
             </ul>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>`;
@@ -220,16 +262,15 @@ function favoritos(a){
   favoritoJson=JSON.parse(localStorage.getItem("favorito"));
   const indexF = favoritoJson.findIndex(i => i.label === a)
   const index = favoritosTemporal.findIndex(i => i.label === a);
-console.log(index);
-  
-  if (indexF > -1) {
+
+  indexF > -1? 
     // si está, lo quitamos
-    eliminarFavorito(favoritosTemporal[index]);
-  } else {
+    eliminarFavorito(favoritosTemporal[index])
+  :
     // si no está, lo añadimos
     favoritoJson.push(favoritosTemporal[index]);
     localStorage.setItem("favorito", JSON.stringify(favoritoJson));
-  }
+  
 
 }
 function eliminarFavorito(a){
