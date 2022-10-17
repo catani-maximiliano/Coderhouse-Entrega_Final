@@ -10,7 +10,7 @@ const resetear = document.querySelector("#resetear");
 const elemento = document.querySelector("#tabla");
 const listaPlatos = document.getElementById("tabla");
 let nuevoPlato = [];
-
+let favoritoJson=[];
 const emailRegister = document.getElementById("emailRegister");
 const contraseñaRegistro = document.getElementById("contraseñaRegistro");
 const contraseñaRegistroCon = document.getElementById("contraseñaRegistroCon");
@@ -78,35 +78,7 @@ registro.onclick = function (e) {
   Register();
 };
 
-/* api de marvel
-const marvel={
-  render: () => {
-    const urlAPI='https://gateway.marvel.com:443/v1/public/characters?ts=1&apikey=83eaf95d88f5e5719aa60d9b4f0c95a8&hash=3a6d9f99d0f9be229c93321256b5f322';
-    const container = document.querySelector("contenedor");
-    let contentHTML='';
 
-    fetch(urlAPI)
-    .then(res =>res.json())
-    .then((json)=>{
-      console.log(json, 'RES.JSON');
-
-
- for (const hero of json.data.results) {
-  console.log( hero.name );
-        let urlHero = hero.urls[0].url
-        document.getElementById("contenedor").innerHTML +=`
-        <div class="col-md-4">
-        <a href="${urlHero}" target="_blank">
-          <img src="${hero.thumbnail.path}.${hero.thumbnail.extension}" alt="${hero.name}"class="img-thumbnail">
-        </a>
-        <h3 class="title">${hero.name}</h3>
-      </div>
-        `;
-      }
-    })
-  }
-};
-marvel.render();*/
 let favoritosTemporal=[]
 
 async function apiRespuesta() {
@@ -114,12 +86,15 @@ async function apiRespuesta() {
   let app_key = "61c7b7bd4ec183a6f7c871979335e3dd";
   let buscadorReceta = document.getElementById("buscadorReceta").value;
   let urlAPI = `https://api.edamam.com/api/recipes/v2?type=public&q=${buscadorReceta}&app_id=${app_id}&app_key=%20${app_key}`;
+  
   let response = await fetch(urlAPI);
   let data = await response.json();
-  console.log(data.hits);
 
+  
   document.getElementById("contenedor").innerHTML = "";
-  for (const receta of data.hits) {
+  
+      for (const receta of data.hits) {
+    
     let health = [];
     let l = receta.recipe.healthLabels.length;
     let punto = "&#9679";
@@ -149,9 +124,9 @@ async function apiRespuesta() {
       Potassium: receta.recipe.digest[7].total.toFixed(1),
       Iron: receta.recipe.digest[8].total.toFixed(1)
     })
-console.log(favoritosTemporal);
-let buttonHeart=`<input type="checkbox" id="checkbox" />
-<label for="checkbox">
+
+let buttonHeart=`<input type="checkbox" class="checkbox" id="fav${receta.recipe.label}" onclick='favoritos("${receta.recipe.label}")' />
+<label for="fav${receta.recipe.label}">
   <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
     <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
       <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
@@ -195,28 +170,24 @@ let buttonHeart=`<input type="checkbox" id="checkbox" />
   </svg>
 </label>
 `;
-let buttonClose=``;
 
     document.getElementById("contenedor").innerHTML += `
     <div class="col-md-8 mx-auto my-1 rounded" id="recetas">
     <div class="card  box-shadow">
       <div class="card-body ">
         <div class="d-flex flex-nowrap row">
-          <div class="m-1 col-md-4 ">
+          <div class=" col-md-4 ">
             <img class="card-img"
               data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt=""
               src="${receta.recipe.images.REGULAR.url}" data-holder-rendered="true"
               style="height: 200px; width:100%; display: block;">
           </div>
-          <div class="col-md-8 m-1 d-flex col">
+          <div class="col-md-8 d-flex col">
             <div>
-              <div class="d-flex  align-items-center mt-3 ">
+              <div class="d-flex justify-content-between  align-items-center ">
                 <h2 class="card-title">${receta.recipe.label}</h2>
                 <div >
-                <button type="button"  onclick='favoritos("${receta.recipe.label}")'
-                class="btn ">${buttonHeart}</button>
-                <button type="button"  onclick='eliminarFavorito("${receta.recipe.label}")'
-                class="btn btn-warning text-dark">${buttonClose}</button>
+                ${buttonHeart}
                 </div>
               </div>
               <p class="card-text" id="">&#9679;${health}</p>
@@ -253,30 +224,46 @@ let buttonClose=``;
     </div>
   </div>`;
   }
+ 
 }
 
-    let favoritoNuevo=[];
-    let favoritoJson=JSON.parse(localStorage.getItem("favorito"));
-
+let favoritoNuevo=[];
+    
 function favoritos(a){
-  favoritoJson=JSON.parse(localStorage.getItem("favorito"));
-  const indexF = favoritoJson.findIndex(i => i.label === a)
   const index = favoritosTemporal.findIndex(i => i.label === a);
+  favoritoJson=JSON.parse(localStorage.getItem("favorito"));
+  let indexF;
 
-  indexF > -1? 
-    // si está, lo quitamos
-    eliminarFavorito(favoritosTemporal[index])
-  :
+  if( Array.isArray(favoritoJson)){
+     indexF = favoritoJson.findIndex(i => i.label === a)
+  }else{
+    favoritoJson=[];
+    localStorage.setItem("favorito", JSON.stringify(favoritoJson));
+    indexF = favoritoJson.findIndex(i => i.label === a);
+  }
+if(indexF > -1){
+
+      // si está, lo quitamos
+      fav = favoritoJson.filter(f => f.label !== a);
+      favoritoJson= JSON.parse(localStorage.getItem("favorito"));
+      localStorage.setItem("favorito", JSON.stringify(fav));
+}else{
+  
     // si no está, lo añadimos
     favoritoJson.push(favoritosTemporal[index]);
     localStorage.setItem("favorito", JSON.stringify(favoritoJson));
-  
+}
+
 
 }
+
+
 function eliminarFavorito(a){
-  favoritoJson= JSON.parse(localStorage.getItem("favorito"));
-  fav = favoritoJson.filter(f => f.label !== a);
-  localStorage.setItem("favorito", JSON.stringify(fav));
+  if(Array.isArray(favoritoJson)){
+    fav = favoritoJson.filter(f => f.label !== a);
+    favoritoJson= JSON.parse(localStorage.getItem("favorito"));
+    localStorage.setItem("favorito", JSON.stringify(fav));
+   }
 }
 
 //funciones
@@ -375,7 +362,8 @@ function ingreso() {
 
 function mostrarPlato() {
   if (usuarioConectadoJson === true) {
-   // reset();
+    document.getElementById("contenedor").innerHTML =``;
+    favoritoJson=JSON.parse(localStorage.getItem("favorito"));
     for (let i of favoritoJson) {
       document.getElementById("contenedor").innerHTML += `
       <div class="col-md-8 mx-auto my-1 rounded" id="recetas">
@@ -394,7 +382,7 @@ function mostrarPlato() {
                 <div class="d-flex  align-items-center mt-3 ">
                   <h2 class="card-title">${i.label}</h2>
                   <div >
-                  <button type="button"  onclick='favoritos("${i.label}")'
+                  <button type="button"  onclick='eliminarFavorito("${i.label}")'
                   class="btn btn-warning text-dark">favorito</button>
                   </div>
                 </div>
@@ -434,13 +422,6 @@ function mostrarPlato() {
       </div>
     </div>`;
       
-      /*tablaContent += `
-    <tr>
-      <td>${item.nombre}</td>
-      <td>${item.ingredientes}</td>
-      <td>${item.pais}</td>
-      <td>${item.precio}</td>
-    </td>`;*/
     }
     //listaPlatos.innerHTML += tablaContent;
   } else {
@@ -600,41 +581,6 @@ function reset() {
 let usuarioExistenteRegistro = "";
 let usuarioJson = [];
 usuarioJson = JSON.parse(localStorage.getItem("usuario"));
-/*
-function Login() {
-  if (usuarioConectadoJson === false) {
-    //buscar si existe usuario y contraseña y pasar por variable para validarlo.
-    //validacion de mail y contraseña dentro del localstorage.
-    let usuarioExistenteSesion = "";
-    let emailSesion = document.getElementById("emailSesion").value;
-    let contraseñaSesion = document.getElementById("contraseñaSesion").value;
-    for (let i = 0; i < usuarioJson.length; i++) {
-      if (usuarioJson[i].email == emailSesion && usuarioJson[i].contraseña == contraseñaSesion){
-        usuarioExistenteSesion = usuarioJson[i].email;}}
-
-    if (emailSesion !== usuarioExistenteSesion) {
-      Swal.fire("Usuario o contraseña incorrectas");
-      return;
-    } else {
-      //pasar a usuario como conectado y guardarlo en el sessionStorage.
-      usuarioConectado = true;
-      sessionStorage.setItem("usuarioConectado",JSON.stringify(usuarioConectado));
-      usuarioConectadoJson = JSON.parse(sessionStorage.getItem("usuarioConectado"));
-
-      //ocultar botones registro y login, y visibilizar el boton cerrar sesion.
-      document.getElementById("boton-ingresar").className = "d-none";
-      document.getElementById("boton-registrar").className = "d-none";
-      document.getElementById("boton-cerrar-sesion").className =
-        "d-block btn btn-primary text-dark";
-      Swal.fire("ingresaste Correctamente");
-      function cerrarBoton(){
-        // simulamos el click del mouse en el boton del formulario
-        document.getElementById("boton-cerrar-login").click();
-      }
-      setTimeout(cerrarBoton, 1000);
-    }
-  }
-}*/
 
 function Login() {
   let usuarioExistenteSesion = "";
@@ -644,7 +590,7 @@ function Login() {
     //buscar si existe usuario y contraseña y pasar por variable para validarlo.
     //validacion de mail y contraseña dentro del localstorage.
     usuarioFind = usuarioJson.find((usuario) => usuario.email == emailSesion);
-    console.log(usuarioFind, emailSesion);
+    
 
     if (usuarioFind.contraseña === contraseñaSesion) {
       usuarioExistenteSesion = usuarioFind.email;
@@ -654,7 +600,6 @@ function Login() {
     }
   }
 
-  console.log(usuarioExistenteSesion);
   if (emailSesion === usuarioExistenteSesion) {
     //pasar a usuario como conectado y guardarlo en el sessionStorage.
     usuarioConectado = true;
@@ -695,9 +640,7 @@ function Register() {
   
     for (let i = 0; i < usuarioJson.length; i++) {
       if (usuarioJson[i].email == emailReg)
-
       usuarioExistenteRegistro=usuarioJson[i].email;
-      console.log(usuarioExistenteRegistro);
     }
   if(usuarioExistenteRegistro==emailReg){
             Swal.fire("Este mail ya esta registrado!!!");

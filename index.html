@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>desafio -segunda entrega</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="hearth.css">
@@ -15,7 +16,7 @@
 
 <body class="bg-light">
   <main role="main">
-  <!-- Botones login, registro, cerrar sesion-->
+    <!-- Botones login, registro, cerrar sesion-->
     <nav class="navbar navbar-expand-lg navbar-warning bg-warning col-md-12">
       <!-- botones  -->
       <div class="collapse navbar-collapse col-md-4">
@@ -44,11 +45,11 @@
               <button type="button" id="filtrarPlato" class="btn btn-warning"
                 onmouseover="ver('infofiltrarPlato')">busqueda de
                 platos</button>
-              <button type="button" id="filtrarPais" class="btn btn-warning" onmouseover="ver('infofiltrarPais')">busqueda
+              <button type="button" id="filtrarPais" class="btn btn-warning"
+                onmouseover="ver('infofiltrarPais')">busqueda
                 por
                 pais</button>
-              <button type="button" id="resetear" class="btn btn-warning "
-                onmouseover="ver('inforesetear')">Limpieza de
+              <button type="button" id="resetear" class="btn btn-warning " onmouseover="ver('inforesetear')">Limpieza de
                 Tabla</button>
             </div>
           </li>
@@ -61,11 +62,11 @@
         <button type="button" class="btn btn-success " onclick="apiRespuesta()">Buscar</button>
       </div>
       <!-- Botones login y registro-->
-      <div  class="col-md-3 d-flex justify-content-end ">
-        <button type="button" id="boton-ingresar" class="btn btn-warning text-dark btn-outline-light text-black" data-bs-toggle="modal"
-          data-bs-target="#modalIngreso">Ingreso</button>
-        <button type="button" id="boton-registrar" class="btn btn-warning btn-outline-light text-black mx-1" data-bs-toggle="modal"
-          data-bs-target="#modalRegistro">Registro</button>
+      <div class="col-md-3 d-flex justify-content-end ">
+        <button type="button" id="boton-ingresar" class="btn btn-warning text-dark btn-outline-light text-black"
+          data-bs-toggle="modal" data-bs-target="#modalIngreso">Ingreso</button>
+        <button type="button" id="boton-registrar" class="btn btn-warning btn-outline-light text-black mx-1"
+          data-bs-toggle="modal" data-bs-target="#modalRegistro">Registro </button>
         <button type="button" id="boton-cerrar-sesion" onclick="CerrarSesion()"
           class="btn d-none  btn-warning text-dark">Cerrar Sesión</button>
       </div>
@@ -202,89 +203,108 @@
       </div>
     </div>
 
-    <div class="d-flex row w-75 m-auto">
-
-      <!-- Tabla -->
-      <table id="tabla" class="table table-bordered table-dark table-striped table-hover">
-        <tr>
-          <th>Plato</th>
-          <th>ingredientes</th>
-          <th>pais de origen</th>
-          <th>Precio</th>
-        </tr>
-        <!-- son espacios en blanco dentro de la tabla asi no esta thead solo-->
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </table>
-    </div>
-    <input type="checkbox" id="checkbox" />
-                <label for="checkbox">
-                  <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
-                    <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
-                      <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
-                      <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
-            
-                      <g id="grp7" opacity="0" transform="translate(7 6)">
-                        <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
-                        <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
-                      </g>
-            
-                      <g id="grp6" opacity="0" transform="translate(0 28)">
-                        <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
-                        <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
-                      </g>
-            
-                      <g id="grp3" opacity="0" transform="translate(52 28)">
-                        <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
-                        <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
-                      </g>
-            
-                      <g id="grp2" opacity="0" transform="translate(44 6)">
-                        <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
-                        <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
-                      </g>
-            
-                      <g id="grp5" opacity="0" transform="translate(14 50)">
-                        <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
-                        <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
-                      </g>
-            
-                      <g id="grp4" opacity="0" transform="translate(35 50)">
-                        <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
-                        <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
-                      </g>
-            
-                      <g id="grp1" opacity="0" transform="translate(24)">
-                        <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
-                        <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
-                      </g>
-                    </g>
-                  </svg>
-                </label>
     <div class="container col-md-12 rounded-5" id="contenedor">
+      <div class="col-md-8 mx-auto my-1 rounded" id="recetas">
+        <div class="card  box-shadow">
+          <div class="card-body ">
+            <div class="d-flex flex-nowrap row">
+              <div class="m-1 col-md-4 ">
+                <img class="card-img"
+                  data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt=""
+                  src="https://edamam-product-images.s3.amazonaws.com/web-img/72e/72ebeef4f13b029165ce5fc4a675130e.jpg?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEEEaCXVzLWVhc3QtMSJHMEUCIBFAUp4RPupB%2BvoCFecS8shiOgSUHv%2BesImd4zYimRxqAiEA99RkVYV5x2Nw5jW%2FTKofbwRUFawHqVhKn6Npf2LCmlMqzAQIGhAAGgwxODcwMTcxNTA5ODYiDDgIhgjKuSYqj%2BvUriqpBOZtAC%2FRajwNn9CYaEHitEUeCnqDj%2BA6SQXULBMlPe5fHK42OU0iSjudMYddP%2FHKS%2BfWYRt5F9h%2BNm%2BRkf555fBBVdjsMnhfHmcQP%2BOhGaiwjqvqye4rfNbt0Rq8CS7kn%2F7erjlxJGu4wBVs1wrayNIS0rPVqy7mY%2BQ7baVcpu8h9KCEU5zvT%2FSO06mFc%2FXVfvVpT1n1dVTTr6et4t2X3GssTSEL6S0BWGpW8YJBpedBilXkgfk8uxsRaQuNJyUTu8q4yMHMVn%2FhjDYGRVBlUbSVVX6RmwJh%2BsWIw%2FdcFbZK31UbqZqZ9KM4dy4Bn3M8cmoE4d1qFj8GjK1OQTtbaI%2Fds7MjK05T0bS3rrio1QFgLETknqWIXl2nJHFdDxg0WbzWn5lawK%2BUhg9wp5kGZS6FNQ%2FP1%2BPtnn88Z%2FcCkRdWQdzZn1jccvDNulhXmODcrH1EO0bFvnXG%2BdKpK8H2UwruqhvG%2FaEfUz9G4Wf6rfBzyXF2bNYnkM2dQgt4Bl4Opf3ZLATsbgU0pPFO7WWtZqlB0kKeHPoRkIJdiYCiRrgv2YAbfrWMOm21opq4X9Z2bPofp5sOWYDItgGVZwhDw0hSbYIGdTRxYFAWaI0uSBpF%2FzvYvsh0jNT7Tn0bGu20uBzmXOc91L3O%2Fk6%2BMTEV5UKUzXBqnF6j0JklTb%2FNq1fwFqK%2BvGos0XMZDZxLhKewtLtfcIiSmWpXQVAI7dNk3igKEHp%2BeXCo6VkwyYm2mgY6qQEvXK4ciUKxTVvjGm7I9i6DZW5x0x%2BtwaIudxYOU0TrCkeooTt0nvAtrxZ8IbJW8%2F1utQ1ykXr6ffuqJB1PGAc%2Bnv3SBuk8Lt%2FsBwVMoxHpoA7Y8hmCBcVwn0%2FNNkWkvrcU%2B%2BEZDZeH6i%2BwHw0y2z2yE3yWFIJa6AhOwuo7kIh3D7Wr6%2FfAkXKD1Um%2FTsi1C570RjoEK5NH3rkHYSZMDVKK28Gt3uwi2dom&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20221017T173404Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=ASIASXCYXIIFHSYJMEGE%2F20221017%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Signature=e57f7d98b2c81a03a60c30b91edcf6479363b6a2dfb6124e86d0f743da4f4f0f"
+                  data-holder-rendered="true" style="height: 200px; width:100%; display: block;">
+              </div>
+              <div class="col-md-8 d-flex col">
+                <div>
+                  <div class="d-flex  align-items-center justify-content-between ">
+                    <h2 class="card-title">Steak &amp; Chips Salad</h2>
+                    <div class="">
+                      <button type="button" onclick="favoritos(&quot;Steak &amp; Chips Salad&quot;)" class="btn "><input
+                          type="checkbox" class="checkbox" id="favSteak &amp; Chips Salad">
+                        <label for="favSteak &amp; Chips Salad">
+                          <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
+                            <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+                              <path
+                                d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z"
+                                id="heart" fill="#AAB8C2"></path>
+                              <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"></circle>
 
+                              <g id="grp7" opacity="0" transform="translate(7 6)">
+                                <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"></circle>
+                                <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"></circle>
+                              </g>
+
+                              <g id="grp6" opacity="0" transform="translate(0 28)">
+                                <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"></circle>
+                                <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2"></circle>
+                              </g>
+
+                              <g id="grp3" opacity="0" transform="translate(52 28)">
+                                <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"></circle>
+                                <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"></circle>
+                              </g>
+
+                              <g id="grp2" opacity="0" transform="translate(44 6)">
+                                <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"></circle>
+                                <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"></circle>
+                              </g>
+
+                              <g id="grp5" opacity="0" transform="translate(14 50)">
+                                <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2"></circle>
+                                <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2"></circle>
+                              </g>
+
+                              <g id="grp4" opacity="0" transform="translate(35 50)">
+                                <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2"></circle>
+                                <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2"></circle>
+                              </g>
+
+                              <g id="grp1" opacity="0" transform="translate(24)">
+                                <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"></circle>
+                                <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"></circle>
+                              </g>
+                            </g>
+                          </svg>
+                        </label>
+                      </button>
+                    </div>
+                  </div>
+                  <p class="card-text" id="">●Dairy-Free ●Gluten-Free ●Wheat-Free ●Egg-Free ●Peanut-Free ●Tree-Nut-Free
+                    ●Soy-Free ●Fish-Free ●Shellfish-Free ●Pork-Free ●Crustacean-Free ●Celery-Free ●Sesame-Free
+                    ●Lupine-Free ●Mollusk-Free ●Alcohol-Free </p>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex col-md-12 justify-content-between align-content-center row my-2 mx-auto ">
+              <div class="col-md-4 d-flex justify-content-center mx-auto row">
+                <small class="text-muted">comida tipica: american</small>
+                <div class="">
+                  <h5>2922 Kcal</h5>
+                </div>
+                <button type="button" class="btn btn-primary btn-lg"><a href="http://www.bbcgoodfood.com/recipes/3076/"
+                    target="_blank" style="text-decoration:none; color:white">Ir al Sitio</a></button>
+              </div>
+              <div class="col-md-4">
+                <ul class="list-unstyled ">
+                  <li class="d-flex justify-content-between "> <span>🔴 Protein</span> <span>123.3 g</span> </li>
+                  <li class="d-flex justify-content-between "> <span>🟢 Fat</span> <span>317.0 g</span> </li>
+                  <li class="d-flex justify-content-between "> <span> 🟡 Carb</span> <span>165.4 g</span> </li>
+                </ul>
+              </div>
+              <div class="col-md-4">
+                <ul class="list-unstyled ">
+                  <li class="d-flex justify-content-between "> <span>Cholesterol</span> <span>530.4 mg</span> </li>
+                  <li class="d-flex justify-content-between "> <span>Sodium</span> <span>1494.0 mg</span> </li>
+                  <li class="d-flex justify-content-between "> <span>Calcium</span> <span>2594.5 mg</span> </li>
+                  <li class="d-flex justify-content-between "> <span>Magnesium</span> <span>619.8 mg</span> </li>
+                  <li class="d-flex justify-content-between "> <span>Potassium</span> <span>6443.1 mg</span> </li>
+                  <li class="d-flex justify-content-between "> <span>Iron</span> <span>166.2 mg</span> </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     </div>
   </main>
