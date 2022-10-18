@@ -5,7 +5,7 @@ const mostrarPlatos = document.getElementById("mostrar");
 const ordenarPrecio = document.getElementById("ordenarPrecio");
 const ordenarProducto = document.getElementById("ordenarProducto");
 const filtrarPlato = document.getElementById("filtrarPlato");
-const filtrarPais = document.getElementById("filtrarPais");
+
 const resetear = document.querySelector("#resetear");
 const elemento = document.querySelector("#tabla");
 const listaPlatos = document.getElementById("tabla");
@@ -53,32 +53,30 @@ class usuario {
 
 
 //funcionalidad de los botones
-ingresar.onclick = function (e) {
-  ingreso();
-};
+
 mostrarPlatos.onclick = function (e) {
-  mostrarPlato();
+  mostrarFavoritos();
 };
 ordenarPrecio.onclick = function (e) {
-  ordenPrecio();
+  ordenarCalorias();
 };
 ordenarProducto.onclick = function (e) {
-  ordenProducto();
+  ordenarNombre();
 };
 filtrarPlato.onclick = function (e) {
-  filtradoPlato();
-};
-filtrarPais.onclick = function (e) {
-  filtradoPais();
+  busquedaReceta();
 };
 resetear.addEventListener("click", () => {
-  reset();
+  borrarFavoritos();
 });
 registro.onclick = function (e) {
   Register();
 };
 
 
+
+
+//funciones
 let favoritosTemporal=[]
 
 async function apiRespuesta(a) {
@@ -224,7 +222,7 @@ let buttonHeart=`<input type="checkbox" class="checkbox" id="fav${receta.recipe.
     </div>
   </div>`;
   }
- 
+  document.getElementById("buscadorReceta").value="";
 }
 
 let favoritoNuevo=[];
@@ -241,122 +239,22 @@ function favoritos(a){
     localStorage.setItem("favorito", JSON.stringify(favoritoJson));
     indexF = favoritoJson.findIndex(i => i.label === a);
   }
-if(indexF > -1){
-
+  if(indexF > -1){
       // si está, lo quitamos
       fav = favoritoJson.filter(f => f.label !== a);
       favoritoJson= JSON.parse(localStorage.getItem("favorito"));
       localStorage.setItem("favorito", JSON.stringify(fav));
 }else{
-  
     // si no está, lo añadimos
     favoritoJson.push(favoritosTemporal[index]);
     localStorage.setItem("favorito", JSON.stringify(favoritoJson));
 }
-
-
 }
 
-
-//funciones
-function ver(mostrar) {
-  let infoMostrar = "Mostrar los Platos guardados en el LocalStorage";
-  let infoOrdenarPrecio = "Ordenar todos los platos por Precio";
-  let infoOrdenarProducto = "Ordenar todos los platos por Producto";
-  let infofiltrarPlato = "busqueda de platos por su nombre";
-  let infofiltrarPais = "busqueda de platos por su pais de origen";
-  let inforesetear = "Limpiar Tabla pero no borra los datos del local storage";
-
-  //implementacion de Tostify para los Botones
-  if (mostrar == "infoMostrar") {
-    Toastify({
-      text: infoMostrar,
-      className: "info",
-      stopOnFocus: true,
-      gravity: "top",
-      position: "right",
-    }).showToast();
-  } else if (mostrar == "infoOrdenarPrecio") {
-    Toastify({
-      text: infoOrdenarPrecio,
-      className: "info",
-      gravity: "top",
-      position: "right",
-    }).showToast();
-  } else if (mostrar == "infoOrdenarProducto") {
-    Toastify({
-      text: infoOrdenarProducto,
-      className: "info",
-      gravity: "top",
-      position: "right",
-    }).showToast();
-  } else if (mostrar == "infofiltrarPlato") {
-    Toastify({
-      text: infofiltrarPlato,
-      className: "info",
-      gravity: "top",
-      position: "right",
-    }).showToast();
-  } else if (mostrar == "infofiltrarPais") {
-    Toastify({
-      text: infofiltrarPais,
-      className: "info",
-      gravity: "top",
-      position: "right",
-    }).showToast();
-  } else if (mostrar == "inforesetear") {
-    Toastify({
-      text: inforesetear,
-      className: "info",
-      gravity: "top",
-      position: "right",
-    }).showToast();
-  }
-}
-
-function ingreso() {
-  let nombre = document.getElementById("formNombre").value;
-  let ingredientes = document.getElementById("formIngredientes").value;
-  let pais = document.getElementById("formPais").value;
-  let precio = document.getElementById("formPrecio").value;
-
-  if (usuarioConectadoJson === true) {
-    nuevoPlato.push(new comidas(nombre, ingredientes, pais, precio));
-
-    //guardado del plato en el localStorage.
-    localStorage.setItem("plato", JSON.stringify(nuevoPlato));
-    //en platoJson guardo el objeto del localstorage y luego la variable platoJson la utilizo para el resto de funciones.
-    platoJson = JSON.parse(localStorage.getItem("plato"));
-
-    document.getElementById("formNombre").value = "";
-    document.getElementById("formIngredientes").value = "";
-    document.getElementById("formPais").value = "";
-    document.getElementById("formPrecio").value = "";
-
-    //implementacion de Tostify para el ingreso de un plato
-    Toastify({
-      text: "Se guardo Correctamente",
-      className: "info",
-      stopOnFocus: true,
-      gravity: "top",
-      position: "center",
-      style: { background: "green" },
-    }).showToast();
-  } else {
-    Swal.fire("Para continuar debe Iniciar Sesión");
-    function mostrar() {
-      // simulamos el click del mouse en el boton del formulario
-      document.getElementById("boton-ingresar").click();
-    }
-    setTimeout(mostrar, 1000);
-  }
-}
-
-function mostrarPlato() {
+function mostrarFavoritos() {
   if (usuarioConectadoJson === true) {
     document.getElementById("contenedor").innerHTML =``;
     favoritoJson=JSON.parse(localStorage.getItem("favorito"));
-
     for (let i of favoritoJson) {
       let buttonHeart=`<input type="checkbox" class="checkbox" id="fav${i.label}" onclick='favoritos("${i.label}")' />
 <label for="fav${i.label}">
@@ -471,26 +369,116 @@ function mostrarPlato() {
   }
 }
 
-function ordenPrecio() {
+function ordenarCalorias() {
   if (usuarioConectadoJson === true) {
-    reset();
-
-    ordenadosPrecio = platoJson.map((elemento) => elemento);
-    ordenadosPrecio.sort(function (a, b) {
-      return a.precio - b.precio;
+    favoritoJson=JSON.parse(localStorage.getItem("favorito"));
+    favoritoJson.map((elemento) => elemento);
+    favoritoJson.sort(function (a, b) {
+      return a.calories - b.calories;
     });
+    document.getElementById("contenedor").innerHTML =``;
+    for (let i of favoritoJson) {
+      let buttonHeart=`<input type="checkbox" class="checkbox" id="fav${i.label}" onclick='favoritos("${i.label}")' />
+<label for="fav${i.label}">
+  <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
+    <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+      <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
+      <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
 
-    for (let item1 of ordenadosPrecio) {
-      tablaContentPrecio += `
-      <tr>
-        <td>${item1.nombre}</td>
-        <td>${item1.ingredientes}</td>
-        <td>${item1.pais}</td>
-        <td>${item1.precio}</td>
-      </td>
-    `;
+      <g id="grp7" opacity="0" transform="translate(7 6)">
+        <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
+        <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
+      </g>
+
+      <g id="grp6" opacity="0" transform="translate(0 28)">
+        <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
+        <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
+      </g>
+
+      <g id="grp3" opacity="0" transform="translate(52 28)">
+        <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
+        <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
+      </g>
+
+      <g id="grp2" opacity="0" transform="translate(44 6)">
+        <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
+        <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
+      </g>
+
+      <g id="grp5" opacity="0" transform="translate(14 50)">
+        <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
+        <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
+      </g>
+
+      <g id="grp4" opacity="0" transform="translate(35 50)">
+        <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
+        <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
+      </g>
+
+      <g id="grp1" opacity="0" transform="translate(24)">
+        <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
+        <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
+      </g>
+    </g>
+  </svg>
+</label>
+`;
+      document.getElementById("contenedor").innerHTML += `
+      <div class="col-md-8 mx-auto my-1 rounded" id="recetas">
+      <div class="card  box-shadow">
+        <div class="card-body ">
+  
+          <div class="d-flex flex-nowrap row">
+            <div class="m-1 col-md-4 ">
+              <img class="card-img"
+                data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt=""
+                src="${i.image}" data-holder-rendered="true"
+                style="height: 200px; width:100%; display: block;">
+            </div>
+            <div class="col-md-8 m-1 d-flex col">
+              <div>
+                <div class="d-flex  align-items-center mt-3 ">
+                  <h2 class="card-title">${i.label}</h2>
+                  <div >
+                  ${buttonHeart}
+                  </div>
+                </div>
+                <p class="card-text" id="">&#9679;${i.healthLabels}</p>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex col-md-12 d-flex justify-content-between align-content-center row my-2 mx-auto ">
+            <div class="col-md-4 d-flex justify-content-center mx-auto row">
+              <small class="text-muted">comida tipica: ${i.tipic[0]}</small>
+              <div class="">
+                <h5>${i.calories} Kcal</h5>
+            </div>
+            <button type="button" class="btn btn-primary btn-lg"><a href="${i.url}" target="_blank" style="text-decoration:none; color:white">Ir al Sitio</a></button>
+          </div>
+            <div class="col-md-4">
+              <ul class="list-unstyled ">
+                <li class="d-flex justify-content-between "> <span>&#128308; Protein</span> <span>${i.Protein} g</span> </li>
+                <li class="d-flex justify-content-between "> <span>&#128994; Fat</span> <span>${i.Fat} g</span> </li>
+                <li class="d-flex justify-content-between "> <span>	&#128993; Carb</span> <span>${i.Carb} g</span> </li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <ul class="list-unstyled ">
+                <li class="d-flex justify-content-between "> <span>Cholesterol</span> <span>${i.Cholesterol} mg</span> </li>
+                <li class="d-flex justify-content-between "> <span>Sodium</span> <span>${i.Sodium} mg</span> </li>
+                <li class="d-flex justify-content-between "> <span>Calcium</span> <span>${i.Calcium} mg</span> </li>
+                <li class="d-flex justify-content-between "> <span>Magnesium</span> <span>${i.Magnesium} mg</span> </li>
+                <li class="d-flex justify-content-between "> <span>Potassium</span> <span>${i.Potassium} mg</span> </li>
+                <li class="d-flex justify-content-between "> <span>Iron</span> <span>${i.Iron} mg</span> </li>
+              </ul>
+            </div>
+          </div>
+  
+  
+        </div>
+      </div>
+    </div>`;
     }
-    listaPlatos.innerHTML += tablaContentPrecio;
   } else {
     Swal.fire("Para continuar debe Iniciar Sesión");
     function mostrar() {
@@ -501,25 +489,17 @@ function ordenPrecio() {
   }
 }
 
-function ordenProducto() {
+function ordenarNombre() {
   if (usuarioConectadoJson === true) {
-   
     favoritoJson=JSON.parse(localStorage.getItem("favorito"));
     favoritoJson.map((elemento) => elemento);
     console.log(favoritoJson);
     favoritoJson.sort(function (a, b) {
-      if (a.label > b.label) {
-        return 1;
-      }
-      if (a.label < b.label) {
-        return -1;
-      }
+      if (a.label > b.label) {return 1;}
+      if (a.label < b.label) {return -1;}
       return 0;
     });
-    if (usuarioConectadoJson === true) {
       document.getElementById("contenedor").innerHTML =``;
-      
-  
       for (let i of favoritoJson) {
         let buttonHeart=`<input type="checkbox" class="checkbox" id="fav${i.label}" onclick='favoritos("${i.label}")' />
   <label for="fav${i.label}">
@@ -623,35 +603,7 @@ function ordenProducto() {
       </div>`;
         
       }
-
     }else{
-    Swal.fire("Para continuar debe Iniciar Sesión");
-    function mostrar() {
-      // simulamos el click del mouse en el boton del formulario
-      document.getElementById("boton-ingresar").click();
-    }
-    setTimeout(mostrar, 1000);
-  }
-}}
-
-function filtradoPlato() {
-  if (usuarioConectadoJson === true) {
-    reset();
-    let platoF = prompt("ingrese el nombre del plato que quiere buscar");
-    let platoFiltrado = platoJson.filter((plato) => plato.nombre == platoF);
-
-    for (let plato of platoFiltrado) {
-      tablaContentFiltroPlato += `
-    <tr>
-      <td>${plato.nombre}</td>
-      <td>${plato.ingredientes}</td>
-      <td>${plato.pais}</td>
-      <td>${plato.precio}</td>
-    </td>
-  `;
-    }
-    listaPlatos.innerHTML += tablaContentFiltroPlato;
-  } else {
     Swal.fire("Para continuar debe Iniciar Sesión");
     function mostrar() {
       // simulamos el click del mouse en el boton del formulario
@@ -661,9 +613,38 @@ function filtradoPlato() {
   }
 }
 
+
+let recetaBa=[];
+function busquedaReceta() {
+  if (usuarioConectadoJson === true) {
+    let recetaB=document.getElementById("formRecetaBusqueda").value;
+    recetaB.split(" ");
+
+    favoritoJson=JSON.parse(localStorage.getItem("favorito"));
+    recetaBa=[];
+
+      document.getElementById("boton-cerrar-busqueda").click();
+    
+    for (let i of favoritoJson) {
+      if(i.label.search(recetaB)>0){
+        console.log("encontro");
+        recetaBa.push(i);
+      }
+    } 
+  console.log(recetaBa);
+
+  } else {
+    Swal.fire("Para continuar debe Iniciar Sesión");
+    function mostrar() {
+      // simulamos el click del mouse en el boton del formulario
+      document.getElementById("boton-cerrar-busqueda").click();
+    }
+    setTimeout(mostrar, 1000);
+  }
+}
+
 function filtradoPais() {
   if (usuarioConectadoJson === true) {
-    reset();
     let platoA = prompt(
       "ingrese el pais de origen del plato que quiere buscar"
     );
@@ -690,23 +671,11 @@ function filtradoPais() {
   }
 }
 
-function reset() {
+function borrarFavoritos() {
   if (usuarioConectadoJson === true) {
-    elemento.innerHTML = `
-  <table id="tabla" class="w-75 m-5 table table-bordered table-striped table-dark">
-  <tr>
-      <th>Plato</th>
-      <th>ingredientes</th>
-      <th>pais de origen</th>
-      <th>Precio</th>
-  </tr>
-  </table>`;
-
-    tablaContent = ``;
-    tablaContentPrecio = ``;
-    tablaContentProducto = ``;
-    tablaContentFiltroPais = ``;
-    tablaContentFiltroPlato = ``;
+    favoritoJson=[]
+    localStorage.setItem("favorito", JSON.stringify(favoritoJson));
+    document.getElementById("contenedor").innerHTML =``;
   } else {
     Swal.fire("Para continuar debe Iniciar Sesión");
     function mostrar() {

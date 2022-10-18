@@ -22,33 +22,17 @@
       <div class="collapse navbar-collapse col-md-4">
         <!-- Botones -->
         <ul class="navbar-nav ">
-
           <li class="nav-item">
-            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Modal">Ingresar
-              Plato</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" id="mostrar" class="btn btn-warning" onmouseover="ver('infoMostrar')">Favoritos</button>
+            <button type="button" id="mostrar" class="btn btn-warning">Favoritos</button>
           </li>
           <li class="nav-item dropdown ">
             <a class="nav-link dropdown-toggle" id="dropdown05" data-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">Funciones</a>
             <div class="dropdown-menu bg-warning  " aria-labelledby="dropdown05">
-              <button type="button" id="ordenarPrecio" class="btn btn-warning"
-                onmouseover="ver('infoOrdenarPrecio')">Ordenar por
-                Precio</button>
-              <button type="button" id="ordenarProducto" class="btn btn-warning"
-                onmouseover="ver('infoOrdenarProducto')">Ordenar
-                por Producto</button>
-              <button type="button" id="filtrarPlato" class="btn btn-warning"
-                onmouseover="ver('infofiltrarPlato')">busqueda de
-                platos</button>
-              <button type="button" id="filtrarPais" class="btn btn-warning"
-                onmouseover="ver('infofiltrarPais')">busqueda
-                por
-                pais</button>
-              <button type="button" id="resetear" class="btn btn-warning " onmouseover="ver('inforesetear')">Limpieza de
-                Tabla</button>
+              <button type="button" id="ordenarPrecio" class="btn btn-warning">Ordenar por Calorias</button>
+              <button type="button" id="ordenarProducto" class="btn btn-warning">Ordenar por Nombre</button>
+              <button type="button" id="filtrarPlato" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalBusquedaReceta">Busqueda por Nombre</button>
+              <button type="button" id="resetear" class="btn btn-warning ">Borrar Todos los Favoritos</button>
             </div>
           </li>
         </ul>
@@ -144,69 +128,29 @@
 
     </div>
 
-    <!-- Modal ingreso del plato -->
-    <div class="modal fade modal-lg" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
 
-            <section class="intro h-100 w-100">
-              <div class="bg-image h-100">
-                <div class="mask d-flex align-items-center h-100" style="background-color: #f3f2f2;">
-                  <div class="container">
-                    <div class="row d-flex justify-content-center align-items-center">
-                      <div class="col-12">
-                        <div class="card" style="border-radius: 1rem;">
-                          <div class="row g-0">
-
-                            <div class="col-md-8 d-flex align-items-center">
-                              <div class="card-body py-2 px-4 p-md-5">
-
-                                <form method="post" action="#">
-
-                                  <p class="mb-4" style="color: #45526e;">Por favor ingrese el Plato de Comida y
-                                    complete
-                                    el resto de los campos.</p>
-
-                                  <div class="form-outline mb-4">
-                                    <input type="text" id="formNombre" class="form-control"
-                                      placeholder="Nombre del Plato" />
-                                  </div>
-
-                                  <div class="form-outline mb-4">
-                                    <input type="text" id="formPais" class="form-control"
-                                      placeholder="Pais de Origen" />
-                                  </div>
-
-                                  <div class="form-outline mb-4">
-                                    <input type="number" id="formPrecio" class="form-control" placeholder="Precio" />
-                                  </div>
-
-                                  <div class="form-outline mb-4">
-                                    <textarea class="form-control" id="formIngredientes" rows="4"
-                                      placeholder="Ingredientes"></textarea>
-                                  </div>
-                                </form>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button class="btn btn-primary btn-rounded" type="button" id="ingresar" onclick="ingresar()"
-              style="background-color: #5c8cd8;">Ingresar Plato</button>
-          </div>
+<!-- Modal busqueda de plato favoritos -->
+<div class="modal fade" id="modalBusquedaReceta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Busqueda por Nombre</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-outline mb-4">
+          <input type="text" id="formRecetaBusqueda" class="form-control"
+            placeholder="Nombre de la Receta" />
         </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="boton-cerrar-busqueda" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="busquedaReceta()">Buscar</button>
+      </div>
     </div>
+  </div>
+</div>
+
 
     <!-- Modal Login-->
     <div class="modal modal-signin " tabindex="-1" role="dialog" id="modalIngreso">
@@ -270,107 +214,7 @@
     </div>
 
     <div class="container col-md-12 rounded-5" id="contenedor">
-      <div class="col-md-8 mx-auto my-1 rounded" id="recetas">
-        <div class="card  box-shadow">
-          <div class="card-body ">
-            <div class="d-flex flex-nowrap row">
-              <div class="m-1 col-md-4 ">
-                <img class="card-img"
-                  data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt=""
-                  src="https://edamam-product-images.s3.amazonaws.com/web-img/72e/72ebeef4f13b029165ce5fc4a675130e.jpg?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEEEaCXVzLWVhc3QtMSJHMEUCIBFAUp4RPupB%2BvoCFecS8shiOgSUHv%2BesImd4zYimRxqAiEA99RkVYV5x2Nw5jW%2FTKofbwRUFawHqVhKn6Npf2LCmlMqzAQIGhAAGgwxODcwMTcxNTA5ODYiDDgIhgjKuSYqj%2BvUriqpBOZtAC%2FRajwNn9CYaEHitEUeCnqDj%2BA6SQXULBMlPe5fHK42OU0iSjudMYddP%2FHKS%2BfWYRt5F9h%2BNm%2BRkf555fBBVdjsMnhfHmcQP%2BOhGaiwjqvqye4rfNbt0Rq8CS7kn%2F7erjlxJGu4wBVs1wrayNIS0rPVqy7mY%2BQ7baVcpu8h9KCEU5zvT%2FSO06mFc%2FXVfvVpT1n1dVTTr6et4t2X3GssTSEL6S0BWGpW8YJBpedBilXkgfk8uxsRaQuNJyUTu8q4yMHMVn%2FhjDYGRVBlUbSVVX6RmwJh%2BsWIw%2FdcFbZK31UbqZqZ9KM4dy4Bn3M8cmoE4d1qFj8GjK1OQTtbaI%2Fds7MjK05T0bS3rrio1QFgLETknqWIXl2nJHFdDxg0WbzWn5lawK%2BUhg9wp5kGZS6FNQ%2FP1%2BPtnn88Z%2FcCkRdWQdzZn1jccvDNulhXmODcrH1EO0bFvnXG%2BdKpK8H2UwruqhvG%2FaEfUz9G4Wf6rfBzyXF2bNYnkM2dQgt4Bl4Opf3ZLATsbgU0pPFO7WWtZqlB0kKeHPoRkIJdiYCiRrgv2YAbfrWMOm21opq4X9Z2bPofp5sOWYDItgGVZwhDw0hSbYIGdTRxYFAWaI0uSBpF%2FzvYvsh0jNT7Tn0bGu20uBzmXOc91L3O%2Fk6%2BMTEV5UKUzXBqnF6j0JklTb%2FNq1fwFqK%2BvGos0XMZDZxLhKewtLtfcIiSmWpXQVAI7dNk3igKEHp%2BeXCo6VkwyYm2mgY6qQEvXK4ciUKxTVvjGm7I9i6DZW5x0x%2BtwaIudxYOU0TrCkeooTt0nvAtrxZ8IbJW8%2F1utQ1ykXr6ffuqJB1PGAc%2Bnv3SBuk8Lt%2FsBwVMoxHpoA7Y8hmCBcVwn0%2FNNkWkvrcU%2B%2BEZDZeH6i%2BwHw0y2z2yE3yWFIJa6AhOwuo7kIh3D7Wr6%2FfAkXKD1Um%2FTsi1C570RjoEK5NH3rkHYSZMDVKK28Gt3uwi2dom&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20221017T173404Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=3600&amp;X-Amz-Credential=ASIASXCYXIIFHSYJMEGE%2F20221017%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Signature=e57f7d98b2c81a03a60c30b91edcf6479363b6a2dfb6124e86d0f743da4f4f0f"
-                  data-holder-rendered="true" style="height: 200px; width:100%; display: block;">
-              </div>
-              <div class="col-md-8 d-flex col">
-                <div>
-                  <div class="d-flex  align-items-center justify-content-between ">
-                    <h2 class="card-title">Steak &amp; Chips Salad</h2>
-                    <div class="">
-                      <button type="button" onclick="favoritos(&quot;Steak &amp; Chips Salad&quot;)" class="btn "><input
-                          type="checkbox" class="checkbox" id="favSteak &amp; Chips Salad">
-                        <label for="favSteak &amp; Chips Salad">
-                          <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
-                            <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
-                              <path
-                                d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z"
-                                id="heart" fill="#AAB8C2"></path>
-                              <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"></circle>
 
-                              <g id="grp7" opacity="0" transform="translate(7 6)">
-                                <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"></circle>
-                                <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"></circle>
-                              </g>
-
-                              <g id="grp6" opacity="0" transform="translate(0 28)">
-                                <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"></circle>
-                                <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2"></circle>
-                              </g>
-
-                              <g id="grp3" opacity="0" transform="translate(52 28)">
-                                <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"></circle>
-                                <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"></circle>
-                              </g>
-
-                              <g id="grp2" opacity="0" transform="translate(44 6)">
-                                <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"></circle>
-                                <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"></circle>
-                              </g>
-
-                              <g id="grp5" opacity="0" transform="translate(14 50)">
-                                <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2"></circle>
-                                <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2"></circle>
-                              </g>
-
-                              <g id="grp4" opacity="0" transform="translate(35 50)">
-                                <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2"></circle>
-                                <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2"></circle>
-                              </g>
-
-                              <g id="grp1" opacity="0" transform="translate(24)">
-                                <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"></circle>
-                                <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"></circle>
-                              </g>
-                            </g>
-                          </svg>
-                        </label>
-                      </button>
-                    </div>
-                  </div>
-                  <p class="card-text" id="">●Dairy-Free ●Gluten-Free ●Wheat-Free ●Egg-Free ●Peanut-Free ●Tree-Nut-Free
-                    ●Soy-Free ●Fish-Free ●Shellfish-Free ●Pork-Free ●Crustacean-Free ●Celery-Free ●Sesame-Free
-                    ●Lupine-Free ●Mollusk-Free ●Alcohol-Free </p>
-                </div>
-              </div>
-            </div>
-            <div class="d-flex col-md-12 justify-content-between align-content-center row my-2 mx-auto ">
-              <div class="col-md-4 d-flex justify-content-center mx-auto row">
-                <small class="text-muted">comida tipica: american</small>
-                <div class="">
-                  <h5>2922 Kcal</h5>
-                </div>
-                <button type="button" class="btn btn-primary btn-lg"><a href="http://www.bbcgoodfood.com/recipes/3076/"
-                    target="_blank" style="text-decoration:none; color:white">Ir al Sitio</a></button>
-              </div>
-              <div class="col-md-4">
-                <ul class="list-unstyled ">
-                  <li class="d-flex justify-content-between "> <span>🔴 Protein</span> <span>123.3 g</span> </li>
-                  <li class="d-flex justify-content-between "> <span>🟢 Fat</span> <span>317.0 g</span> </li>
-                  <li class="d-flex justify-content-between "> <span> 🟡 Carb</span> <span>165.4 g</span> </li>
-                </ul>
-              </div>
-              <div class="col-md-4">
-                <ul class="list-unstyled ">
-                  <li class="d-flex justify-content-between "> <span>Cholesterol</span> <span>530.4 mg</span> </li>
-                  <li class="d-flex justify-content-between "> <span>Sodium</span> <span>1494.0 mg</span> </li>
-                  <li class="d-flex justify-content-between "> <span>Calcium</span> <span>2594.5 mg</span> </li>
-                  <li class="d-flex justify-content-between "> <span>Magnesium</span> <span>619.8 mg</span> </li>
-                  <li class="d-flex justify-content-between "> <span>Potassium</span> <span>6443.1 mg</span> </li>
-                  <li class="d-flex justify-content-between "> <span>Iron</span> <span>166.2 mg</span> </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     </div>
   </main>
