@@ -81,11 +81,11 @@ registro.onclick = function (e) {
 
 let favoritosTemporal=[]
 
-async function apiRespuesta() {
+async function apiRespuesta(a) {
   let app_id = "5d3a5e8f";
   let app_key = "61c7b7bd4ec183a6f7c871979335e3dd";
   let buscadorReceta = document.getElementById("buscadorReceta").value;
-  let urlAPI = `https://api.edamam.com/api/recipes/v2?type=public&q=${buscadorReceta}&app_id=${app_id}&app_key=%20${app_key}`;
+  let urlAPI = `https://api.edamam.com/api/recipes/v2?type=public&q=${buscadorReceta||a}&app_id=${app_id}&app_key=%20${app_key}`;
   
   let response = await fetch(urlAPI);
   let data = await response.json();
@@ -258,14 +258,6 @@ if(indexF > -1){
 }
 
 
-function eliminarFavorito(a){
-  if(Array.isArray(favoritoJson)){
-    fav = favoritoJson.filter(f => f.label !== a);
-    favoritoJson= JSON.parse(localStorage.getItem("favorito"));
-    localStorage.setItem("favorito", JSON.stringify(fav));
-   }
-}
-
 //funciones
 function ver(mostrar) {
   let infoMostrar = "Mostrar los Platos guardados en el LocalStorage";
@@ -364,7 +356,53 @@ function mostrarPlato() {
   if (usuarioConectadoJson === true) {
     document.getElementById("contenedor").innerHTML =``;
     favoritoJson=JSON.parse(localStorage.getItem("favorito"));
+
     for (let i of favoritoJson) {
+      let buttonHeart=`<input type="checkbox" class="checkbox" id="fav${i.label}" onclick='favoritos("${i.label}")' />
+<label for="fav${i.label}">
+  <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
+    <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+      <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
+      <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
+
+      <g id="grp7" opacity="0" transform="translate(7 6)">
+        <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
+        <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
+      </g>
+
+      <g id="grp6" opacity="0" transform="translate(0 28)">
+        <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
+        <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
+      </g>
+
+      <g id="grp3" opacity="0" transform="translate(52 28)">
+        <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
+        <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
+      </g>
+
+      <g id="grp2" opacity="0" transform="translate(44 6)">
+        <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
+        <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
+      </g>
+
+      <g id="grp5" opacity="0" transform="translate(14 50)">
+        <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
+        <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
+      </g>
+
+      <g id="grp4" opacity="0" transform="translate(35 50)">
+        <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
+        <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
+      </g>
+
+      <g id="grp1" opacity="0" transform="translate(24)">
+        <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
+        <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
+      </g>
+    </g>
+  </svg>
+</label>
+`;
       document.getElementById("contenedor").innerHTML += `
       <div class="col-md-8 mx-auto my-1 rounded" id="recetas">
       <div class="card  box-shadow">
@@ -382,8 +420,7 @@ function mostrarPlato() {
                 <div class="d-flex  align-items-center mt-3 ">
                   <h2 class="card-title">${i.label}</h2>
                   <div >
-                  <button type="button"  onclick='eliminarFavorito("${i.label}")'
-                  class="btn btn-warning text-dark">favorito</button>
+                  ${buttonHeart}
                   </div>
                 </div>
                 <p class="card-text" id="">&#9679;${i.healthLabels}</p>
@@ -466,26 +503,128 @@ function ordenPrecio() {
 
 function ordenProducto() {
   if (usuarioConectadoJson === true) {
-    reset();
-    ordenadosProducto = platoJson.map((elemento) => elemento);
-    ordenadosProducto.sort(function (a, b) {
-      //funcion Optimizada
-      a.nombre > b.nombre ? 1 : -1;
+   
+    favoritoJson=JSON.parse(localStorage.getItem("favorito"));
+    favoritoJson.map((elemento) => elemento);
+    console.log(favoritoJson);
+    favoritoJson.sort(function (a, b) {
+      if (a.label > b.label) {
+        return 1;
+      }
+      if (a.label < b.label) {
+        return -1;
+      }
       return 0;
     });
+    if (usuarioConectadoJson === true) {
+      document.getElementById("contenedor").innerHTML =``;
+      
+  
+      for (let i of favoritoJson) {
+        let buttonHeart=`<input type="checkbox" class="checkbox" id="fav${i.label}" onclick='favoritos("${i.label}")' />
+  <label for="fav${i.label}">
+    <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
+      <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+        <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
+        <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
+  
+        <g id="grp7" opacity="0" transform="translate(7 6)">
+          <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
+          <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
+        </g>
+  
+        <g id="grp6" opacity="0" transform="translate(0 28)">
+          <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
+          <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
+        </g>
+  
+        <g id="grp3" opacity="0" transform="translate(52 28)">
+          <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
+          <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
+        </g>
+  
+        <g id="grp2" opacity="0" transform="translate(44 6)">
+          <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
+          <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
+        </g>
+  
+        <g id="grp5" opacity="0" transform="translate(14 50)">
+          <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
+          <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
+        </g>
+  
+        <g id="grp4" opacity="0" transform="translate(35 50)">
+          <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
+          <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
+        </g>
+  
+        <g id="grp1" opacity="0" transform="translate(24)">
+          <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
+          <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
+        </g>
+      </g>
+    </svg>
+  </label>
+  `;
+        document.getElementById("contenedor").innerHTML += `
+        <div class="col-md-8 mx-auto my-1 rounded" id="recetas">
+        <div class="card  box-shadow">
+          <div class="card-body ">
+    
+            <div class="d-flex flex-nowrap row">
+              <div class="m-1 col-md-4 ">
+                <img class="card-img"
+                  data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt=""
+                  src="${i.image}" data-holder-rendered="true"
+                  style="height: 200px; width:100%; display: block;">
+              </div>
+              <div class="col-md-8 m-1 d-flex col">
+                <div>
+                  <div class="d-flex  align-items-center mt-3 ">
+                    <h2 class="card-title">${i.label}</h2>
+                    <div >
+                    ${buttonHeart}
+                    </div>
+                  </div>
+                  <p class="card-text" id="">&#9679;${i.healthLabels}</p>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex col-md-12 d-flex justify-content-between align-content-center row my-2 mx-auto ">
+              <div class="col-md-4 d-flex justify-content-center mx-auto row">
+                <small class="text-muted">comida tipica: ${i.tipic[0]}</small>
+                <div class="">
+                  <h5>${i.calories} Kcal</h5>
+              </div>
+              <button type="button" class="btn btn-primary btn-lg"><a href="${i.url}" target="_blank" style="text-decoration:none; color:white">Ir al Sitio</a></button>
+            </div>
+              <div class="col-md-4">
+                <ul class="list-unstyled ">
+                  <li class="d-flex justify-content-between "> <span>&#128308; Protein</span> <span>${i.Protein} g</span> </li>
+                  <li class="d-flex justify-content-between "> <span>&#128994; Fat</span> <span>${i.Fat} g</span> </li>
+                  <li class="d-flex justify-content-between "> <span>	&#128993; Carb</span> <span>${i.Carb} g</span> </li>
+                </ul>
+              </div>
+              <div class="col-md-4">
+                <ul class="list-unstyled ">
+                  <li class="d-flex justify-content-between "> <span>Cholesterol</span> <span>${i.Cholesterol} mg</span> </li>
+                  <li class="d-flex justify-content-between "> <span>Sodium</span> <span>${i.Sodium} mg</span> </li>
+                  <li class="d-flex justify-content-between "> <span>Calcium</span> <span>${i.Calcium} mg</span> </li>
+                  <li class="d-flex justify-content-between "> <span>Magnesium</span> <span>${i.Magnesium} mg</span> </li>
+                  <li class="d-flex justify-content-between "> <span>Potassium</span> <span>${i.Potassium} mg</span> </li>
+                  <li class="d-flex justify-content-between "> <span>Iron</span> <span>${i.Iron} mg</span> </li>
+                </ul>
+              </div>
+            </div>
+    
+    
+          </div>
+        </div>
+      </div>`;
+        
+      }
 
-    for (let item1 of ordenadosProducto) {
-      tablaContentProducto += `
-      <tr>
-        <td>${item1.nombre}</td>
-        <td>${item1.ingredientes}</td>
-        <td>${item1.pais}</td>
-        <td>${item1.precio}</td>
-      </td>
-    `;
-    }
-    listaPlatos.innerHTML += tablaContentProducto;
-  } else {
+    }else{
     Swal.fire("Para continuar debe Iniciar Sesión");
     function mostrar() {
       // simulamos el click del mouse en el boton del formulario
@@ -493,7 +632,7 @@ function ordenProducto() {
     }
     setTimeout(mostrar, 1000);
   }
-}
+}}
 
 function filtradoPlato() {
   if (usuarioConectadoJson === true) {
