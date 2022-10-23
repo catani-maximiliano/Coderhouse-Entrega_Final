@@ -19,5 +19,8 @@ img{
     margin-left: -1em; /* Also needed for space (tweak if needed) */
   }
 
-
+#imagen-atajo{
+  width: 70px;
+  height: 70px;
+}
   
