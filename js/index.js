@@ -843,15 +843,16 @@ function Login() {
 function Register() {
   usuarioConectado = false;
 
-  emailReg = document.getElementById("emailRegister").value;
-  contraseñaReg = document.getElementById("contraseñaRegistro").value;
-  contraseñaRegCon = document.getElementById("contraseñaRegistroCon").value;
+  let emailReg = document.getElementById("emailRegister").value;
+  let contraseñaReg = document.getElementById("contraseñaRegistro").value;
+  let contraseñaRegCon = document.getElementById("contraseñaRegistroCon").value;
   //busca en el localStorage si existe el mail ingresado. intente con filter pero no pude hacer que sea igual un valor a la busqueda.
-
+if(usuarioJson!==null){
   for (let i = 0; i < usuarioJson.length; i++) {
     if (usuarioJson[i].email == emailReg)
       usuarioExistenteRegistro = usuarioJson[i].email;
   }
+}
   if (usuarioExistenteRegistro == emailReg) {
     Swal.fire("Este mail ya esta registrado!!!");
     return;
@@ -875,13 +876,8 @@ function Register() {
     return;
   } else {
     usuarioConectado = false;
-    sessionStorage.setItem(
-      "usuarioConectado",
-      JSON.stringify(usuarioConectado)
-    );
-    usuarioConectadoJson = JSON.parse(
-      sessionStorage.getItem("usuarioConectado")
-    );
+    sessionStorage.setItem("usuarioConectado", JSON.stringify(usuarioConectado));
+    usuarioConectadoJson = JSON.parse(sessionStorage.getItem("usuarioConectado"));
     let usuarioX = { email: emailReg, contraseña: contraseñaReg };
     usuarioNuevo.push(usuarioX);
     //guardado del usuario en el localStorage.
@@ -890,6 +886,8 @@ function Register() {
     usuarioJson = JSON.parse(localStorage.getItem("usuario"));
 
     Swal.fire("Registrado con exito");
+
+
 
     //cree funcion mostrar y clickbutton para poder cerrar el modal registro y abrir el login simultaneamente.
     function mostrar() {
